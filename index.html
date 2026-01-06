@@ -3,55 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speech Tokenizer Demo</title>
-    <!-- 👇 关键：引用外部CSS文件，替代原来的<style>标签 -->
+    <title>DSA-Tokenizer: Disentangled Semantic-Acoustic Tokenization</title>
+    <!-- 引用独立CSS文件（复刻wavtokenizer风格+绿色元素） -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Speech Acoustic & Semantic Token Extraction Model (Demo)</h1>
+    <!-- 标题区域（居中+浅绿色下划线，贴合原版风格） -->
+    <header>
+        <h1>DSA-Tokenizer: Disentangled Semantic-Acoustic Tokenization via Flow Matching-based Hierarchical Fusion</h1>
+    </header>
 
+    <!-- 摘要区域（白色卡片，核心内容） -->
     <div class="content">
-        <h2>1. Model Introduction</h2>
-        <p>An efficient speech tokenizer for acoustic and semantic token extraction, supporting high-performance multi-GPU parallel inference. The model is trained on large-scale speech datasets with high tokenization accuracy and inference efficiency.</p>
+        <h2>Abstract</h2>
+        <p>
+            Speech tokenizers serve as the cornerstone of discrete Speech Large Language Models (Speech LLMs). 
+            Existing tokenizers either prioritize semantic encoding, fuse semantic content with acoustic style inseparably, or achieve incomplete semantic-acoustic disentanglement. 
+            To achieve better disentanglement, we propose <strong>DSA-Tokenizer</strong>, which explicitly disentangles speech into discrete semantic and acoustic tokens via distinct optimization constraints. 
+            Specifically, semantic tokens are supervised by ASR to capture linguistic content, while acoustic tokens focus on mel-spectrograms restoration to encode style. 
+            To eliminate rigid length constraints between the two sequences, we introduce a hierarchical <strong>Flow-Matching</strong> decoder that further improve speech generation quality.
+            Furthermore, We employ a joint reconstruction-recombination training strategy to enforce this separation. DSA-Tokenizer enables high fidelity reconstruction and flexible recombination through robust disentanglement, facilitating controllable generation in speech LLMs.
+            Our analysis highlights disentangled tokenization as a pivotal paradigm for future speech modeling.
+        </p>
     </div>
 
+    <!-- 第一小节：Reconstruction 音频表格 -->
     <div class="content">
-        <h2>2. Audio Demo Samples</h2>
-        <p>Original Speech:</p>
-        <div class="audio-box">
-            <audio controls preload="none">
-                <source src="audios/common_voice_en_682528-common_voice_en_682530_original.wav" type="audio/wav">
-            </audio>
+        <h2>1. Reconstruction</h2>
+        <p>Speech reconstruction results of different tokenizers (higher fidelity indicates better performance):</p>
+        <!-- 音频表格：适配移动端，溢出可横向滚动 -->
+        <div class="audio-table-wrapper">
+            <table class="audio-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Groundtruth</th>
+                        <th>WavTokenizer</th>
+                        <th>Mimi</th>
+                        <th>Encodec</th>
+                        <th>DualCodec</th>
+                        <th>SpeechTokenizer</th>
+                        <th>SAC</th>
+                        <th>DSA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 音频行1（示例：Sample 1） -->
+                    <tr>
+                        <td>Sample 1</td>
+                        <td><audio controls preload="none"><source src="audio/recon/gt_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/wavtok_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/mimi_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/encodec_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/dualcodec_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/speechtok_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/sac_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/dsa_1.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <!-- 音频行2（示例：Sample 2，可按需增加） -->
+                    <tr>
+                        <td>Sample 2</td>
+                        <td><audio controls preload="none"><source src="audio/recon/gt_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/wavtok_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/mimi_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/encodec_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/dualcodec_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/speechtok_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/sac_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recon/dsa_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <p>Reconstruct speech:</p>
-        <div class="audio-box">
-            <audio controls preload="none">
-                <source src="audios/common_voice_en_682528-common_voice_en_682530_semantic_acoustic.wav" type="audio/wav">
-            </audio>
-        </div>
-	    <p>semantic-only speech:</p>
-        <div class="audio-box">
-            <audio controls preload="none">
-                <source src="audios/common_voice_en_682528-common_voice_en_682530_semantic_only.wav" type="audio/wav">
-            </audio>
-        </div>
-	    <p>acoustic-only speech:</p>
-        <div class="audio-box">
-            <audio controls preload="none">
-                <source src="audios/common_voice_en_682528-common_voice_en_682530_acoustic_only.wav" type="audio/wav">
-            </audio>
-        </div>
-
     </div>
 
+    <!-- 第二小节：Recombination 音频表格 -->
     <div class="content">
-        <h2>3. Multi-GPU Inference Performance</h2>
+        <h2>2. Recombination</h2>
+        <p>Speech recombination results (flexible semantic-acoustic fusion):</p>
+        <!-- 音频表格：适配移动端 -->
+        <div class="audio-table-wrapper">
+            <table class="audio-table">
+                <thead>
+                    <tr>
+                        <th>Sample</th>
+                        <th>Semantic Source</th>
+                        <th>Acoustic Source</th>
+                        <th>Mimi</th>
+                        <th>Encodec</th>
+                        <th>DualCodec</th>
+                        <th>SpeechTokenizer</th>
+                        <th>SAC</th>
+                        <th>DSA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 音频行1（示例：Sample 1） -->
+                    <tr>
+                        <td>Sample 1</td>
+                        <td><audio controls preload="none"><source src="audio/recom/sem_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/acou_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/mimi_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/encodec_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/dualcodec_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/speechtok_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/sac_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/dsa_1.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <!-- 音频行2（示例：Sample 2，可按需增加） -->
+                    <tr>
+                        <td>Sample 2</td>
+                        <td><audio controls preload="none"><source src="audio/recom/sem_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/acou_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/mimi_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/encodec_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/dualcodec_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/speechtok_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/sac_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls preload="none"><source src="audio/recom/dsa_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 第三小节：Disentanglement Probing 图片 -->
+    <div class="content">
+        <h2>3. Disentanglement Probing Results</h2>
+        <p>Quantitative and qualitative analysis of semantic-acoustic disentanglement performance:</p>
+        <!-- 图片区域：居中+自适应+浅绿色边框 -->
         <div class="img-box">
-            <img src="images/gpu_inference.png" alt="Multi-GPU inference">
-            <div class="caption">8-GPU parallel inference running status (GPU utilization & memory usage)</div>
+            <img src="images/disentanglement_probing.png" alt="Disentanglement Probing Results" loading="lazy">
+            <div class="caption">Figure 1: Disentanglement probing results (higher scores indicate better semantic-acoustic separation). DSA-Tokenizer outperforms baselines in both semantic retention and acoustic style preservation.</div>
         </div>
     </div>
 
-    <div class="footer">Anonymous Demo Page for Academic Peer Review</div>
+    <!-- 页脚（匿名评审专用） -->
+    <footer class="footer">
+        Anonymous Demo Page for DSA-Tokenizer | Disentangled Semantic-Acoustic Tokenization
+    </footer>
 </body>
 </html>
