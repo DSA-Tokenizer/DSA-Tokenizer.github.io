@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Tokenizer Demo</title>
+    <style>
+        * {margin:0;padding:0;box-sizing:border-box;}
+        body {max-width: 900px;margin: 0 auto;padding: 25px;font-family: 'Arial', sans-serif;background: #f9f9f9;color: #222;}
+        h1 {text-align: center;margin: 30px 0;color: #333;font-size: 26px;border-bottom: 1px solid #ddd;padding-bottom:15px;}
+        .content {background: white;padding: 30px;border-radius: 8px;box-shadow: 0 0 6px rgba(0,0,0,0.08);margin-bottom:25px;}
+        h2 {font-size: 20px;margin: 20px 0 15px;color: #444;}
+        p {line-height: 1.7;font-size: 16px;margin: 10px 0;}
+        .audio-box {margin: 20px 0;padding:15px;background: #f5f5f5;border-radius: 4px;}
+        audio {width: 100%;outline: none;}
+        .img-box {text-align: center;margin: 25px 0;}
+        img {max-width: 100%;border-radius: 4px;border:1px solid #eee;}
+        .caption {font-size:14px;color:#666;margin-top:8px;}
+        .footer {text-align: center;margin-top:50px;font-size:14px;color:#777;}
+    </style>
+</head>
+<body>
+    <h1>Speech Acoustic & Semantic Token Extraction Model (Demo)</h1>
+
+    <div class="content">
+        <h2>1. Model Introduction</h2>
+        <p>An efficient speech tokenizer for acoustic and semantic token extraction, supporting high-performance multi-GPU parallel inference. The model is trained on large-scale speech datasets with high tokenization accuracy and inference efficiency.</p>
+    </div>
+
+    <div class="content">
+        <h2>2. Audio Demo Samples</h2>
+        <p>Original Speech Input:</p>
+        <div class="audio-box">
+            <audio controls preload="none">
+                <source src="audio/input.wav" type="audio/wav">
+            </audio>
+        </div>
+        <p>Tokenized Speech Output:</p>
+        <div class="audio-box">
+            <audio controls preload="none">
+                <source src="audio/output.wav" type="audio/wav">
+            </audio>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>3. Multi-GPU Inference Performance</h2>
+        <div class="img-box">
+            <img src="images/gpu_inference.png" alt="Multi-GPU inference">
+            <div class="caption">8-GPU parallel inference running status (GPU utilization & memory usage)</div>
+        </div>
+    </div>
+
+    <div class="footer">Anonymous Demo Page for Academic Peer Review</div>
+</body>
+</html>
